@@ -125,8 +125,9 @@ specify the following:
         path (get {"" "."} path path)
         {:keys [out]} (git {:gitdir gitdir} "log" "-1" fmt path)
         _ (assert (seq out) "No committed changes?")
+        formatter (SimpleDateFormat. "yyyy-MM-dd")
         [sha, datestr] (-> out s/trim (s/split #"," 2))
-        ctime (Date. ^String datestr)]
+        ctime (.parse formatter datestr)]
     {:ctime ctime :sha sha}))
 
 (defn format-voom-ver
